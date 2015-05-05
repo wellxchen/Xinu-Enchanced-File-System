@@ -5,7 +5,7 @@ Implementation details:
 
 I treat directory as a file. Every iblock is either a file or a directory. I place a flag within the iblock struct to judge wether it is directory. Also, I put a countfiles to count how many files are there in the directory iblock. Each iblock has an array of datablock. If the iblock is directory, the datablocks in the array indicate files under the directory. The name of the files under the directory is stored in ldentry. The ldentry contains the index number to the file and the file name is then stored in the unused buffer in the datablock. 
 
-Three new files were creared to implement the requirements in our project.
+Three new files were creared to implement the new file system.
 
 utilityf.c provides a few helper function. numofpaths get the number of directories between root and destination. extractpath extracts directory within the given paths. For example: given /a/b/c/d, numofpaths will return 4, extractpath will extracts "a", "b", "b", "d" and place them in the buffer that is parsed in. 
 
