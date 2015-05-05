@@ -1,0 +1,16 @@
+Author: Chengkang Xu
+Email: xu411@purdue.edu
+
+Implementation details: 
+
+I treat directory as a file. Every iblock is either a file or a directory. I place a flag within the iblock struct to judge wether it is directory. Also, I put a countfiles to count how many files are there in the directory iblock. Each iblock has an array of datablock. If the iblock is directory, the datablocks in the array indicate files under the directory. The name of the files under the directory is stored in ldentry. The ldentry contains the index number to the file and the file name is then stored in the unused buffer in the datablock. 
+
+Three new files were creared to implement the requirements in our project.
+
+utilityf.c provides a few helper function. numofpaths get the number of directories between root and destination. extractpath extracts directory within the given paths. For example: given /a/b/c/d, numofpaths will return 4, extractpath will extracts "a", "b", "b", "d" and place them in the buffer that is parsed in. 
+
+In mkdir.c and lflistdirh.c, it first iterates iblocks starts from the root. If it finds a match between the extracted path and the file name stored in the ldentry (storesd in the datablock which is stored in the iblock),  it then checks wether the directory already exists. If directory already exists and the command is mkdir, return SYSERR; otherwise create a new ldentry and datablock. Then have the new datablock stored in parent directory's datablock buffer. If directory already exists and the command is ls, iterates all the datablocks stored in the destination and print file name. 
+
+Since we no longer maintain a file list in lfdir, we need to do the same thing in lfsopen. It first iterates iblocks to find the file. If file does not exists and mode is new, set the inum in control to NULL. If the mode is old and file exists, set it to the iblock number that associate with the file. In lfsetup, if the first block is allocated for the new file, update the datablock that stores the lendtry which contains the file iblock index number. 
+
+Since we are using Lf_data, I initialize it in lfscreate.
